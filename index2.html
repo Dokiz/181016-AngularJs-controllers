@@ -1,8 +1,9 @@
 <!doctype html>
-<html ng-app="SampleApp">
+<!doctype html>
+<html ng-app="exampleApp">
 <head>
 	<meta charset="utf-8">
-	<title>2</title>
+	<title>Localizing</title>
 
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -16,26 +17,55 @@
 	<!--AngularJS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 
-    <script>
-	var app = angular.module("SampleApp",[])
-    .controller("defaultCtrl", function ($scope) {
-        $scope.value = "--------";
 
-        $scope.setNewValue = function () {
-            $scope.value = "hello world";
+	<script>
+	angular.module("exampleApp",[])
+.controller("defaultCtrl", function ($scope) {
+        $scope.items = [
+            { name: "Item 1", price: 10.9, category: "Category 1", count: 10, tax: 1.12, expiration: 10},
+            { name: "Item 2", price: 1.1, category: "Category 1", count: 8, tax: 0.55, expiration: 12},
+            { name: "Item 3", price: 2.6, category: "Category 2", count: 7, tax: 0.22, expiration: 5},
+            { name: "Item 4", price: 17.5, category: "Category 2", count: 33, tax: 2.77, expiration: 10}];
+
+        $scope.getExpiryDate = function (days) {
+            var now = new Date();
+            return now.setDate(now.getDate() + days);
         }
     });
 	</script>
+	
 </head>
-<body>
-    <div ng-controller="defaultCtrl">
-        {{value}} <br />
-        <button ng-click="setNewValue()">Change</button>
-    </div>
+<body ng-controller="defaultCtrl">
 
-    <div ng-controller="defaultCtrl">
-        {{value}} <br />
-        <button ng-click="setNewValue()">Change</button>
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h3>
+                Items in cart
+                <span class="label label-info">{{items.length}}</span>
+            </h3>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Count</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in items">
+                    <td>{{item.name}}</td>
+                    <td>{{item.price | currency}}</td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.count | number}}</td>
+                    <td>{{getExpiryDate(item.expiration) | date: "fullDate"}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
